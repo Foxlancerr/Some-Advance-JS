@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="c1">Loading------</div>
+
+    <!-- ----------Javascript file is attached------- -->
+
+    <script>
+        //ajax request to access web api
+
+        let c1 = document.querySelector(".c1");
+
+        function getFood(CountryName) {
+            //by requesting a web api there are three steps involved
+
+            //---1)create xmlHttps request objects
+            let xhr = new XMLHttpRequest();
+
+            //---2)create the request
+            xhr.open("GET", "https://restcountries.com/v3.1/name/" + CountryName, true);
+
+            //---3)send the request.
+            xhr.send();
+
+            //apply load events listener
+            xhr.addEventListener("load", function () {
+                //[date]------> is used for destructed objects
+                //JSON.parse------> is used for converted into objects type
+                //xhr.responceText------> is used for when the requested is success so we access it by this method
+
+                let [data] = JSON.parse(xhr.responseText);
+                console.log(data)
+                console.log(data.currencies[0])
+                let x = data.currencies[0];
+                console.log(x.name)
+
+                let htmlCode = `
+    <div class="country">
+     <img src="${data.flags.png}" alt="">
+      <div class="country_data">
+       <p class="name">${data.area}</p>
+       <p class="curr">${data.currencies[0]}</p>
+       <p class="language">${data.languages[0]}</p>
+      </div>
+    </div>`;
+
+                c1.insertAdjacentHTML('beforeend', htmlCode);
+            });
+        }
+        getFood("pak");
+// getFood("brazil");
+
+    </script>
+</body>
+
+</html>
